@@ -43,3 +43,5 @@ yarn-error.log*
 .env
 .env.*
 /web_wasm/
+my_program
+assets/t.html

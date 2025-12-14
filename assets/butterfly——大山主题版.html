@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mountain Butterfly Theme</title>
+        <!-- 引入 Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- 引入 FontAwesome 图标库 -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+
+        <script>
+            // 配置 Tailwind 主题色，扩展 emerald 和 stone
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            mountain: {
+                                50: "#f2fcf5",
+                                100: "#e1f8e8",
+                                500: "#10b981", // 翠绿
+                                700: "#047857", // 深松绿
+                                900: "#064e3b", // 森林深处
+                            },
+                            stone: {
+                                50: "#fafaf9", // 温暖的岩石白，作为主背景
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            /* --- 1. 导航栏下划线：山林气息的渐变 --- */
+            .nav-link {
+                position: relative;
+            }
+
+            .nav-link::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -4px;
+                width: 100%;
+                height: 3px;
+                border-radius: 2px;
+                /* 渐变色：从浅嫩绿到深松绿 */
+                background: linear-gradient(90deg, #34d399 0%, #059669 100%);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .nav-link:hover::after {
+                transform: scaleX(1);
+            }
+
+            /* --- 2. 完美的云海波浪动画 --- */
+            .waves {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 120px; /* 适当的高度，不过分夸张 */
+                margin-bottom: -1px; /* 消除缝隙 */
+            }
+
+            @keyframes move-forever {
+                0% {
+                    transform: translate3d(-90px, 0, 0);
+                }
+                100% {
+                    transform: translate3d(85px, 0, 0);
+                }
+            }
+
+            .parallax > use {
+                animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5)
+                    infinite;
+            }
+
+            /* 波浪颜色配置 - 核心：必须衔接下方背景色 (stone-50 -> RGB: 250, 250, 249) */
+            .parallax > use:nth-child(1) {
+                animation-delay: -2s;
+                animation-duration: 7s;
+                /* 最远处的浪，透明度低 */
+                fill: rgba(250, 250, 249, 0.3);
+            }
+            .parallax > use:nth-child(2) {
+                animation-delay: -3s;
+                animation-duration: 10s;
+                /* 中间的浪 */
+                fill: rgba(250, 250, 249, 0.6);
+            }
+            .parallax > use:nth-child(3) {
+                animation-delay: -4s;
+                animation-duration: 13s;
+                /* 最近的浪，必须是不透明的，颜色等于 <main> 的背景色 */
+                fill: #fafaf9;
+            }
+
+            /* --- 3. 打字机光标：绿色 --- */
+            @keyframes blink {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+            }
+            .cursor-blink {
+                animation: blink 1s step-end infinite;
+                display: inline-block;
+                width: 3px;
+                height: 1.2em;
+                background-color: #34d399; /* 翠绿色光标 */
+                vertical-align: sub;
+                margin-left: 4px;
+            }
+
+            /* --- 4. 图片容器的切角效果 (可选，增加设计感) --- */
+            .img-card {
+                mask-image: linear-gradient(
+                    to bottom,
+                    black 90%,
+                    transparent 100%
+                );
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    black 100%,
+                    transparent 100%
+                );
+            }
+        </style>
+    </head>
+    <body class="font-sans antialiased text-gray-700 bg-stone-50">
+        <!-- 导航栏 -->
+        <nav
+            id="navbar"
+            class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-5 flex justify-between items-center text-white transition-all duration-500"
+        >
+            <!-- Logo: 增加一点阴影让它在任何背景都清晰 -->
+            <div
+                class="text-2xl font-bold tracking-wider flex items-center gap-2 cursor-pointer hover:text-emerald-300 transition-colors drop-shadow-md"
+            >
+                <i class="fa fa-leaf"></i> Mountain
+            </div>
+
+            <ul
+                class="hidden md:flex space-x-10 text-base font-medium tracking-wide drop-shadow-sm"
+            >
+                <li class="cursor-pointer nav-link py-2">
+                    <i class="fa fa-home mr-2 text-emerald-200"></i>草庐
+                </li>
+                <li class="cursor-pointer nav-link py-2">
+                    <i class="fa fa-book mr-2 text-emerald-200"></i>经阁
+                </li>
+                <li class="cursor-pointer nav-link py-2">
+                    <i class="fa fa-comments mr-2 text-emerald-200"></i>驿站
+                </li>
+                <li class="cursor-pointer nav-link py-2">
+                    <i class="fa fa-user mr-2 text-emerald-200"></i>居士
+                </li>
+            </ul>
+
+            <div class="md:hidden text-2xl cursor-pointer">
+                <i class="fa fa-bars"></i>
+            </div>
+        </nav>
+
+        <!-- 头部 Hero 区域 -->
+        <header
+            class="relative w-full h-screen overflow-hidden bg-mountain-900"
+        >
+            <!-- 背景图：选用了一张色调偏冷绿的山脉图 -->
+            <div
+                id="parallax-bg"
+                class="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
+                style="
+                    background-image: url(&quot;https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop&quot;);
+                    transform: scale(1.1);
+                "
+            ></div>
+
+            <!-- 遮罩层：不再是死黑，而是深绿色的渐变，像森林的阴影 -->
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-mountain-900/40 via-transparent to-mountain-900/60"
+            ></div>
+
+            <!-- 中间文字 -->
+            <div
+                class="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-10 px-4"
+            >
+                <h1
+                    class="text-6xl md:text-8xl font-bold mb-8 drop-shadow-2xl tracking-widest opacity-95 font-serif"
+                >
+                    山川入梦
+                </h1>
+
+                <div
+                    class="text-xl md:text-2xl bg-white/10 backdrop-blur-sm px-10 py-4 rounded-full border border-emerald-200/30 shadow-2xl"
+                >
+                    <span
+                        id="typewriter-text"
+                        class="font-light tracking-widest text-emerald-50"
+                    ></span
+                    ><span class="cursor-blink"></span>
+                </div>
+            </div>
+
+            <!-- 动态波浪 SVG -->
+            <!-- 这里的 fill 已经在 CSS 中定义，且 viewbox 调整使得波浪更平缓 -->
+            <div class="absolute bottom-0 w-full z-20 leading-none">
+                <svg
+                    class="waves"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 24 150 28"
+                    preserveAspectRatio="none"
+                    shape-rendering="auto"
+                >
+                    <defs>
+                        <path
+                            id="gentle-wave"
+                            d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+                        />
+                    </defs>
+                    <g class="parallax">
+                        <use xlink:href="#gentle-wave" x="48" y="0" />
+                        <use xlink:href="#gentle-wave" x="48" y="3" />
+                        <use xlink:href="#gentle-wave" x="48" y="5" />
+                        <use xlink:href="#gentle-wave" x="48" y="7" />
+                    </g>
+                </svg>
+            </div>
+
+            <div
+                class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 animate-bounce cursor-pointer"
+                onclick="scrollToContent()"
+            >
+                <i
+                    class="fa fa-angle-down text-3xl text-emerald-100/70 hover:text-white transition-colors"
+                ></i>
+            </div>
+        </header>
+
+        <!-- 主内容区域：背景色改为 stone-50 (暖岩石白) -->
+        <main
+            id="content"
+            class="relative z-30 bg-stone-50 min-h-screen py-24 px-4 md:px-8"
+        >
+            <div
+                class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10"
+            >
+                <!-- 左侧文章列表 (占9列) -->
+                <div class="lg:col-span-9 space-y-12">
+                    <!-- 文章 1 -->
+                    <article
+                        class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row h-auto md:h-[280px] border border-stone-100"
+                    >
+                        <div class="w-full md:w-5/12 overflow-hidden relative">
+                            <!-- 图片：带一点灰度滤镜，Hover时变彩 -->
+                            <img
+                                src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-100"
+                                alt="Nature"
+                            />
+                        </div>
+                        <div
+                            class="w-full md:w-7/12 p-8 flex flex-col justify-center relative"
+                        >
+                            <div
+                                class="absolute right-6 top-4 text-5xl text-stone-100 font-serif font-bold -z-10 select-none group-hover:text-emerald-50 transition-colors"
+                            >
+                                01
+                            </div>
+
+                            <h2
+                                class="text-2xl font-bold text-stone-800 mb-3 group-hover:text-emerald-700 transition-colors cursor-pointer"
+                            >
+                                大山里的代码禅宗
+                            </h2>
+                            <div
+                                class="text-stone-500 text-sm mb-5 flex items-center gap-4"
+                            >
+                                <span class="flex items-center gap-1"
+                                    ><i
+                                        class="far fa-clock text-emerald-600"
+                                    ></i>
+                                    2023-12-01</span
+                                >
+                                <span
+                                    class="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs border border-emerald-100"
+                                    >随笔</span
+                                >
+                            </div>
+                            <p
+                                class="text-gray-600 line-clamp-3 leading-relaxed"
+                            >
+                                远离城市的喧嚣，在山间敲代码是一种怎样的体验？当键盘的敲击声与窗外的鸟鸣重合，我发现算法的逻辑竟与自然的生长规律如此相似...
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- 文章 2 (交替布局) -->
+                    <article
+                        class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row-reverse h-auto md:h-[280px] border border-stone-100"
+                    >
+                        <div class="w-full md:w-5/12 overflow-hidden relative">
+                            <img
+                                src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-100"
+                                alt="Forest"
+                            />
+                        </div>
+                        <div
+                            class="w-full md:w-7/12 p-8 flex flex-col justify-center relative"
+                        >
+                            <div
+                                class="absolute left-6 top-4 text-5xl text-stone-100 font-serif font-bold -z-10 select-none group-hover:text-emerald-50 transition-colors"
+                            >
+                                02
+                            </div>
+
+                            <h2
+                                class="text-2xl font-bold text-stone-800 mb-3 group-hover:text-emerald-700 transition-colors cursor-pointer"
+                            >
+                                Vue3 与 自然生长
+                            </h2>
+                            <div
+                                class="text-stone-500 text-sm mb-5 flex items-center gap-4"
+                            >
+                                <span class="flex items-center gap-1"
+                                    ><i
+                                        class="far fa-clock text-emerald-600"
+                                    ></i>
+                                    2024-01-15</span
+                                >
+                                <span
+                                    class="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs border border-emerald-100"
+                                    >技术</span
+                                >
+                            </div>
+                            <p
+                                class="text-gray-600 line-clamp-3 leading-relaxed"
+                            >
+                                响应式系统就像生态系统中的水流，数据流向哪里，视图就更新到哪里。本文探讨如何用“道法自然”的思想去构建高可维护的前端架构。
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- 文章 3 -->
+                    <article
+                        class="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row h-auto md:h-[280px] border border-stone-100"
+                    >
+                        <div class="w-full md:w-5/12 overflow-hidden relative">
+                            <img
+                                src="https://images.unsplash.com/photo-1504280501179-fac52dd8e6a5?auto=format&fit=crop&w=800"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-100"
+                                alt="River"
+                            />
+                        </div>
+                        <div
+                            class="w-full md:w-7/12 p-8 flex flex-col justify-center relative"
+                        >
+                            <div
+                                class="absolute right-6 top-4 text-5xl text-stone-100 font-serif font-bold -z-10 select-none group-hover:text-emerald-50 transition-colors"
+                            >
+                                03
+                            </div>
+
+                            <h2
+                                class="text-2xl font-bold text-stone-800 mb-3 group-hover:text-emerald-700 transition-colors cursor-pointer"
+                            >
+                                CSS 视差：移步换景
+                            </h2>
+                            <div
+                                class="text-stone-500 text-sm mb-5 flex items-center gap-4"
+                            >
+                                <span class="flex items-center gap-1"
+                                    ><i
+                                        class="far fa-clock text-emerald-600"
+                                    ></i>
+                                    2024-02-20</span
+                                >
+                                <span
+                                    class="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs border border-emerald-100"
+                                    >教程</span
+                                >
+                            </div>
+                            <p
+                                class="text-gray-600 line-clamp-3 leading-relaxed"
+                            >
+                                古人造园林讲究移步换景，网页设计亦是如此。通过视差滚动（Parallax），我们能让二维的屏幕产生三维的纵深感。
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- 右侧侧边栏 (占3列) -->
+                <div class="lg:col-span-3">
+                    <div class="sticky top-28 space-y-8">
+                        <!-- 个人卡片 -->
+                        <div
+                            class="bg-white rounded-xl shadow-sm p-6 text-center border border-stone-100 hover:shadow-md transition-shadow"
+                        >
+                            <!-- 渐变背景头 -->
+                            <div
+                                class="w-full h-24 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-t-lg absolute top-0 left-0"
+                            ></div>
+
+                            <div class="relative z-10 pt-12">
+                                <!-- 头像外圈改为白色+翠绿 -->
+                                <img
+                                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                                    class="w-24 h-24 mx-auto rounded-full bg-white p-1 ring-4 ring-emerald-50 hover:rotate-12 transition-transform duration-500 cursor-pointer"
+                                    alt="Avatar"
+                                />
+                                <h3
+                                    class="text-xl font-bold mt-4 text-stone-800"
+                                >
+                                    山人 Jerry
+                                </h3>
+                                <p class="text-stone-500 text-sm mt-1">
+                                    写代码的护林员
+                                </p>
+                            </div>
+
+                            <div
+                                class="flex justify-center gap-6 my-6 border-t border-b border-stone-100 py-4"
+                            >
+                                <div
+                                    class="cursor-pointer hover:text-emerald-600"
+                                >
+                                    <div
+                                        class="font-bold text-lg text-stone-800"
+                                    >
+                                        25
+                                    </div>
+                                    <div class="text-xs text-stone-400">
+                                        文章
+                                    </div>
+                                </div>
+                                <div
+                                    class="cursor-pointer hover:text-emerald-600"
+                                >
+                                    <div
+                                        class="font-bold text-lg text-stone-800"
+                                    >
+                                        12
+                                    </div>
+                                    <div class="text-xs text-stone-400">
+                                        标签
+                                    </div>
+                                </div>
+                                <div
+                                    class="cursor-pointer hover:text-emerald-600"
+                                >
+                                    <div
+                                        class="font-bold text-lg text-stone-800"
+                                    >
+                                        6
+                                    </div>
+                                    <div class="text-xs text-stone-400">
+                                        分类
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 按钮：山林渐变色 -->
+                            <button
+                                class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-2 rounded-lg font-medium shadow-emerald-200 shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+                            >
+                                <i class="fab fa-weixin"></i> 入山寻我
+                            </button>
+                        </div>
+
+                        <!-- 标签云 -->
+                        <div
+                            class="bg-white rounded-xl shadow-sm p-6 border border-stone-100"
+                        >
+                            <h3
+                                class="font-bold text-stone-800 mb-4 flex items-center gap-2"
+                            >
+                                <i class="fa fa-tags text-emerald-600"></i>
+                                标签云
+                            </h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="tag-item px-3 py-1 bg-stone-100 rounded-md text-xs text-stone-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                    >自然</span
+                                >
+                                <span
+                                    class="tag-item px-3 py-1 bg-stone-100 rounded-md text-xs text-stone-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                    >前端</span
+                                >
+                                <span
+                                    class="tag-item px-3 py-1 bg-stone-100 rounded-md text-xs text-stone-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                    >Vue</span
+                                >
+                                <span
+                                    class="tag-item px-3 py-1 bg-stone-100 rounded-md text-xs text-stone-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                    >Tailwind</span
+                                >
+                                <span
+                                    class="tag-item px-3 py-1 bg-stone-100 rounded-md text-xs text-stone-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                                    >生活</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 简单的页脚 -->
+        <footer
+            class="bg-white border-t border-stone-200 py-8 text-center text-stone-500 text-sm"
+        >
+            <p>
+                &copy; 2024 Mountain Butterfly. Crafted with
+                <i class="fa fa-heart text-emerald-500"></i> in the Mountains.
+            </p>
+        </footer>
+
+        <script>
+            // --- 1. 视差滚动逻辑 (保持不变，因为逻辑很完美) ---
+            const bg = document.getElementById("parallax-bg");
+            let ticking = false;
+
+            window.addEventListener("scroll", () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrollY = window.scrollY;
+                        if (scrollY < window.innerHeight) {
+                            bg.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0) scale(1.1)`;
+                        }
+
+                        // 导航栏变化：变身为深绿色玻璃态
+                        const navbar = document.getElementById("navbar");
+                        if (scrollY > 50) {
+                            navbar.classList.add(
+                                "bg-emerald-900/90",
+                                "backdrop-blur-md",
+                                "shadow-lg",
+                                "py-3",
+                            );
+                            navbar.classList.remove("py-5");
+                        } else {
+                            navbar.classList.remove(
+                                "bg-emerald-900/90",
+                                "backdrop-blur-md",
+                                "shadow-lg",
+                                "py-3",
+                            );
+                            navbar.classList.add("py-5");
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            function scrollToContent() {
+                document
+                    .getElementById("content")
+                    .scrollIntoView({ behavior: "smooth" });
+            }
+
+            // --- 2. 打字机 (内容更新为大山风格) ---
+            class TypeWriter {
+                constructor(el, toRotate, period) {
+                    this.toRotate = toRotate;
+                    this.el = el;
+                    this.loopNum = 0;
+                    this.period = parseInt(period, 10) || 2000;
+                    this.txt = "";
+                    this.isDeleting = false;
+                    this.tick();
+                }
+
+                tick() {
+                    const i = this.loopNum % this.toRotate.length;
+                    const fullTxt = this.toRotate[i];
+
+                    if (this.isDeleting) {
+                        this.txt = fullTxt.substring(0, this.txt.length - 1);
+                    } else {
+                        this.txt = fullTxt.substring(0, this.txt.length + 1);
+                    }
+
+                    this.el.innerHTML = this.txt;
+
+                    let delta = 150 - Math.random() * 50;
+                    if (this.isDeleting) {
+                        delta = 50;
+                    }
+
+                    if (!this.isDeleting && this.txt === fullTxt) {
+                        delta = this.period;
+                        this.isDeleting = true;
+                    } else if (this.isDeleting && this.txt === "") {
+                        this.isDeleting = false;
+                        this.loopNum++;
+                        delta = 500;
+                    }
+
+                    setTimeout(() => {
+                        this.tick();
+                    }, delta);
+                }
+            }
+
+            window.onload = function () {
+                const elements = document.getElementById("typewriter-text");
+                // 文案也要符合人设
+                const dataRotate = [
+                    "行到水穷处，坐看云起时。",
+                    "写代码，也是一种修行。",
+                    "Stay Hungry, Stay Natural.",
+                ];
+                new TypeWriter(elements, dataRotate, 3000);
+            };
+        </script>
+    </body>
+</html>
