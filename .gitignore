@@ -44,4 +44,5 @@ yarn-error.log*
 .env.*
 /web_wasm/
 my_program
-assets/t.html
+
+/assets/*.{html,json}
