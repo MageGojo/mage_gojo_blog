@@ -1,0 +1,206 @@
+@import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
+
+@theme {
+    --color-yao-bg: #f8f9fa;
+    --color-yao-dark: #1e293b;
+    --color-yao-red: #d93644;
+    --color-yao-yellow: #f2c94c;
+    --color-yao-green: #27ae60;
+    --color-yao-blue: #2980b9;
+
+    --font-serif: "Noto Serif SC", STSong, serif;
+    --font-sans: "PingFang SC", sans-serif;
+
+    --background-image-fabric-pattern: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.08' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* --- 1. 导航栏动画：左进右出逻辑 --- */
+.nav-link {
+    position: relative;
+    padding-bottom: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s;
+}
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #d93644, #f2c94c, #27ae60);
+    transform: scaleX(0);
+    transform-origin: left; /* 关键：始终从左边开始 */
+    transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+.nav-link:hover::after {
+    transform: scaleX(1); /* 向右生长 */
+}
+/* 移出时，scale变回0，origin还在left，所以是向左缩回，视觉干净 */
+
+/* 滚动后的导航栏样式 */
+.nav-transparent {
+    background: transparent;
+    padding: 20px 0;
+}
+.nav-colored {
+    background: #1e293b;
+    padding: 12px 0;
+    /*shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+}
+
+/* --- 2. 特色图标绘制 --- */
+/* 五彩饭图标 */
+.icon-rice {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #d93644 20%,
+        #f2c94c 40%,
+        #8e44ad 60%,
+        #ecf0f1 80%,
+        #2c3e50 100%
+    );
+    display: inline-block;
+}
+/* 铜鼓纹样模拟 (金色光晕) */
+.icon-drum {
+    color: #f2c94c;
+    filter: drop-shadow(0 0 2px rgba(242, 201, 76, 0.6));
+}
+
+/* --- 3. 增强版滚动提示 (鼠标动画) --- */
+.scroll-downs {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 55px;
+}
+.mousey {
+    width: 3px;
+    padding: 10px 15px;
+    height: 35px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    opacity: 0.75;
+    box-sizing: content-box;
+}
+.scroller {
+    width: 3px;
+    height: 10px;
+    border-radius: 25%;
+    background-color: #f2c94c; /* 铜鼓黄 */
+    animation-name: scroll;
+    animation-duration: 2.2s;
+    animation-timing-function: cubic-bezier(0.15, 0.41, 0.69, 0.94);
+    animation-iteration-count: infinite;
+}
+@keyframes scroll {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+}
+
+/* --- 4. 瑶族竹竿光标 --- */
+.cursor-stick {
+    display: inline-block;
+    width: 4px;
+    height: 1.2em;
+    background: #f2c94c;
+    border-radius: 2px;
+    transform: rotate(15deg);
+    margin-left: 4px;
+    animation: beat 0.8s infinite alternate;
+}
+@keyframes beat {
+    to {
+        transform: rotate(25deg) translateY(-2px);
+        opacity: 0.7;
+    }
+}
+
+/* --- 5. 波浪动画 --- */
+.waves {
+    width: 100%;
+    height: 120px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+}
+.parallax > use {
+    animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+.parallax > use:nth-child(1) {
+    fill: rgba(248, 249, 250, 0.7);
+    animation-delay: -2s;
+    animation-duration: 7s;
+}
+.parallax > use:nth-child(2) {
+    fill: rgba(248, 249, 250, 0.5);
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+.parallax > use:nth-child(3) {
+    fill: rgba(248, 249, 250, 0.3);
+    animation-delay: -4s;
+    animation-duration: 13s;
+}
+.parallax > use:nth-child(4) {
+    fill: #f8f9fa;
+    animation-delay: -5s;
+    animation-duration: 20s;
+} /* 匹配 body 背景 */
+@keyframes move-forever {
+    from {
+        transform: translate3d(-90px, 0, 0);
+    }
+    to {
+        transform: translate3d(85px, 0, 0);
+    }
+}
+
+/* --- 6. 二级菜单样式 --- */
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+.group:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* --- 7. 按钮样式 (布努风) --- */
+.btn-yao {
+    background: linear-gradient(90deg, #2c3e50, #2980b9);
+    color: white;
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 0.875rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-yao:hover {
+    background: linear-gradient(90deg, #d93644, #c0392b); /* 悬浮变红 */
+    box-shadow: 0 4px 10px rgba(217, 54, 68, 0.3);
+    transform: translateY(-2px);
+}
