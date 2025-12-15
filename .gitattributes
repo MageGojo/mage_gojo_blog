@@ -1,0 +1,2 @@
+*.js linguist-language=rust
+*.css linguist-language=rust
