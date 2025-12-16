@@ -5,6 +5,7 @@ use crate::utils::PageLang;
 #[component]
 pub fn DefaultLayout(children: Element, lang: PageLang, page_title: String) -> Element {
     rsx! {
+
         html { lang: lang.to_string(),
             head {
                 meta { charset: "UTF-8" }
@@ -13,9 +14,14 @@ pub fn DefaultLayout(children: Element, lang: PageLang, page_title: String) -> E
                     name: "viewport",
                 }
                 title { "{page_title}" }
-
+                link {
+                    rel:"icon",
+                    r#type :"image/png",
+                    href:"/assets/favicon.ico"
+                }
                 link { href:"/assets/output.css",rel:"stylesheet" }
                 link { href:"/assets/all.min.css",rel:"stylesheet" }
+
                 script { src:"/assets/main.js", defer:true}
 
             }

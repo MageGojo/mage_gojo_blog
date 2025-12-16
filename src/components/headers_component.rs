@@ -9,7 +9,7 @@ pub fn HeadersComponent() -> Element {
                 img {
                     alt: "Mountain",
                     class: "w-full h-full object-cover opacity-60",
-                    src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+                    src: "/assets/background.avif",
                 }
                 div { class: "absolute inset-0 bg-gradient-to-b from-slate-900/60 via-transparent to-yao-bg/20" }
             }
@@ -50,6 +50,7 @@ pub fn HeadersComponent() -> Element {
                 "onclick": "scrollToContent()",
                 div { class: "w-12 h-12 flex items-center justify-center rounded-full bg-white/15 backdrop-blur-md shadow-lg ring-1 ring-white/30 hover:ring-white/60 transition-all duration-300 animate-bounce",
                     i { class: "fa fa-angle-down text-2xl text-white/90 hover:text-white" }
+
                 }
             }
         }

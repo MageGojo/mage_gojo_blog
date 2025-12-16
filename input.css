@@ -204,3 +204,13 @@
     box-shadow: 0 4px 10px rgba(217, 54, 68, 0.3);
     transform: translateY(-2px);
 }
+
+/* 默认显示 */
+#navbar {
+    transform: translateY(0);
+}
+
+/* 隐藏状态 */
+#navbar.nav-hidden {
+    transform: translateY(-100%);
+}

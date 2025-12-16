@@ -12,6 +12,42 @@ function scrollToContent(): void {
 window.scrollToContent = scrollToContent;
 
 document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.getElementById("navbar");
+  const content = document.getElementById("content");
+  if (!navbar || !content) return;
+
+  let watching = false;
+
+  // 连续判断函数
+  const updateNav = () => {
+    if (!watching) return;
+
+    const rect = content.getBoundingClientRect();
+    const middle = window.innerHeight / 2;
+
+    if (rect.top <= middle) {
+      navbar.classList.add("nav-hidden");
+    } else {
+      navbar.classList.remove("nav-hidden");
+    }
+  };
+
+  // IntersectionObserver：只负责“开始 / 停止”监听
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        watching = entry.isIntersecting;
+        updateNav();
+      });
+    },
+    {
+      threshold: 0,
+    },
+  );
+  observer.observe(content);
+  // scroll 才负责实时更新
+  window.addEventListener("scroll", updateNav, { passive: true });
+
   // 安全地在 DOMContentLoaded 内获取元素
   const textElement = document.getElementById("typewriter-text");
   if (!textElement) {
@@ -22,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const texts: string[] = [
     "七百弄里话瑶乡，布努儿女情意长。",
     "铜鼓声声震山岗，五彩糯饭飘清香。",
-    "行到水穷处，坐看云起时。",
   ];
 
   let textIndex = 0;
