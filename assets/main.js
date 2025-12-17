@@ -63,5 +63,73 @@
       window.setTimeout(type, typeSpeed);
     }
     type();
+    const btn = document.getElementById("mobile-menu-btn");
+    const icon = btn?.querySelector("i");
+    const overlay = document.getElementById("mobile-overlay");
+    const panel = document.getElementById("mobile-menu-panel");
+    let isOpen = false;
+    function toggleMenu() {
+      isOpen = !isOpen;
+      if (isOpen) {
+        overlay?.classList.remove("hidden");
+        panel?.classList.remove("hidden");
+        void panel?.offsetWidth;
+        overlay?.classList.remove("opacity-0");
+        panel?.classList.remove("opacity-0", "scale-95");
+        panel?.classList.add("opacity-100", "scale-100");
+        icon?.classList.remove("fa-bars");
+        icon?.classList.add("fa-times", "rotate-90");
+      } else {
+        overlay?.classList.add("opacity-0");
+        panel?.classList.remove("opacity-100", "scale-100");
+        panel?.classList.add("opacity-0", "scale-95");
+        icon?.classList.remove("fa-times", "rotate-90");
+        icon?.classList.add("fa-bars");
+        setTimeout(() => {
+          if (!isOpen) {
+            overlay?.classList.add("hidden");
+            panel?.classList.add("hidden");
+            closeAllSubmenus();
+          }
+        }, 300);
+      }
+    }
+    btn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+    overlay?.addEventListener("click", () => {
+      if (isOpen) toggleMenu();
+    });
+    const toggles = document.querySelectorAll(".submenu-toggle");
+    toggles.forEach((toggle) => {
+      toggle.addEventListener("click", function() {
+        const targetId = this.getAttribute("data-target");
+        if (!targetId) return;
+        const content2 = document.getElementById(targetId);
+        const arrow = this.querySelector(".arrow-icon");
+        if (content2) {
+          const isOpened = content2.style.maxHeight && content2.style.maxHeight !== "0px";
+          closeAllSubmenus();
+          if (!isOpened) {
+            const height = content2.scrollHeight;
+            content2.style.maxHeight = height + "px";
+            arrow?.classList.add("rotate-90");
+            this.classList.add("text-yao-red");
+          }
+        }
+      });
+    });
+    function closeAllSubmenus() {
+      document.querySelectorAll(".submenu-content").forEach((el) => {
+        el.style.maxHeight = "0px";
+      });
+      document.querySelectorAll(".arrow-icon").forEach((el) => {
+        el.classList.remove("rotate-90");
+      });
+      document.querySelectorAll(".submenu-toggle").forEach((el) => {
+        el.classList.remove("text-yao-red");
+      });
+    }
   });
 })();

@@ -1,10 +1,11 @@
 {
+  "compilerOptions": {
+    "type": "./global.d.ts"
+  },
   "tasks": {
     "dev": "deno run --watch main.ts",
 
-      "tw:watch": "deno run -A npm:@tailwindcss/cli -i ./input.css -o ./assets/output.css --watch"
-
-
+    "tw:watch": "deno run -A npm:@tailwindcss/cli -i ./input.css -o ./assets/output.css --watch"
   },
   "nodeModulesDir": "auto",
   "imports": {
